@@ -5,6 +5,7 @@ use DateTime::Format::Strptime;
 use Object::Simple -base;
 
 my $StartDate;
+my $EndDate;
 my @Cnt;
 my @OpenStatus=();
 my @OpenIssueCnt;
@@ -13,6 +14,12 @@ sub setStartDate{
     my $day_str = shift;
     my $strp = DateTime::Format::Strptime->new( pattern => '%Y-%m-%d'); # 文字列 のパターンを指定
     $StartDate = $strp->parse_datetime($day_str);
+}
+
+sub setEndDate{
+    my $day_str = shift;
+    my $strp = DateTime::Format::Strptime->new( pattern => '%Y-%m-%d'); # 文字列 のパターンを指定
+    $EndDate = $strp->parse_datetime($day_str);
 }
 
 sub setOpenStatus{
@@ -25,6 +32,8 @@ sub aggregate{
 
     return if $issue->{start_date} eq "";
     die "StartDateが設定されていません\n" unless defined($StartDate);
+
+    return if $issue->{tracker}->{name} ne "バグ";
 
     my $strp = DateTime::Format::Strptime->new( pattern => '%Y-%m-%d'); # 文字列 のパターンを指定
     my $start_date = $strp->parse_datetime($issue->{start_date});
@@ -51,7 +60,21 @@ sub putResult {
     open ( FILE, ">$outfile" ) || die "Cannot open(create) file: $outfile"; 
     print FILE "# week\t\t未完了\t件数\t累積件数\n";
     my $date = $StartDate->clone();
-    foreach my $week (0 .. $#Cnt ){
+
+    if (!defined($EndDate)) {
+	$EndDate = DateTime->today();
+    }
+    my $span_ddays = $EndDate->delta_days($StartDate);
+    my $span_days = $span_ddays->in_units('days');
+    return if $span_days < 7 ;
+    my $SpanWeekCnt = $span_days / 7 - 1;
+
+    foreach my $week (0 .. $SpanWeekCnt ){
+	if ( !exists $Cnt[$week] ) {
+	    $Cnt[$week]=0;
+	    $OpenIssueCnt[$week]=0
+	}
+
         $sum = $sum + $Cnt[$week];
         #print FILE $date->ymd,"\t",$OpenIssueCnt[$week],"\t",$Cnt[$week],"\t",$sum,"\n";
         printf( FILE "%s\t%d\t%d\t%d\n", $date->ymd,$OpenIssueCnt[$week],$Cnt[$week],$sum);

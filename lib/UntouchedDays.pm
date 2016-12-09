@@ -45,7 +45,7 @@ sub putResult {
     my $tracker;
 
     open ( FILE, ">$outfile" ) || die "Cannot open(create) file: $outfile"; 
-    print FILE "# 放置日数\t";
+    print FILE "放置日数\t";
     foreach $tracker( @TargetTracker)
         { print FILE $tracker,"\t"; } 
     print FILE "\n";

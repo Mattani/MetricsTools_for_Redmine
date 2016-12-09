@@ -40,7 +40,7 @@ sub putResult {
     my $queryname = shift;
     my $outfile = $opath ."/" . $queryname ."_". __PACKAGE__ . ".txt";
     open ( FILE, ">$outfile" ) || die "Cannot open(create) file: $outfile"; 
-    print FILE "# 年月	未完了件数 完了件数  完了日数の和\n";
+    print FILE "年月	未完了件数	完了件数	完了日数の和\n";
     foreach my $key ( sort keys %total_days ){
         print FILE $key,"\t\t",$open_count{$key},"\t\t",$close_count{$key},"\t\t", $total_days{$key},"\n";
     }
