@@ -62,7 +62,7 @@ sub putResult {
     my $date = $StartDate->clone();
 
     if (!defined($EndDate)) {
-	$EndDate = DateTime->today();
+	$EndDate = DateTime->today(time_zone => 'local');
     }
     my $span_ddays = $EndDate->delta_days($StartDate);
     my $span_days = $span_ddays->in_units('days');
