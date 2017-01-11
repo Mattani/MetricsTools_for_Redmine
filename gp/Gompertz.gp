@@ -52,7 +52,8 @@ set y2range[0:K*0.55<*]
 fit f(x) infile using 0:4 via K,b,c
 set label sprintf("バグ数（収束値） %2.0f件", K ) at graph 0.7, 0.8 font 'ipag,12'
 set label sprintf("バグ数（実績）   %2s件", lastvalue ) at graph 0.7, 0.8 font 'ipag,12' offset 0,-1
-set label sprintf("バグ収束率       %2.1f％", (lastvalue / K)*100 ) at graph 0.7, 0.8 font 'ipag,12' offset 0,-2
+if (lastvalue <= K) CRate = lastvalue/K; else CRate = K/lastvalue
+set label sprintf("バグ収束率       %2.1f％", CRate*100 ) at graph 0.7, 0.8 font 'ipag,12' offset 0,-2
 plot infile using 0:3 axes x1y2 with boxes lw 1 lc rgb "light-green" title "当週バグ件数",\
      infile using 0:2 axes x1y2 with boxes lw 1 lc rgb "light-pink" title "当週未完了バグ件数",\
      f(x) with line linecolor rgb "blue" linewidth 3 title "",\
