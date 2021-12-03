@@ -24,10 +24,10 @@ my $issues = RestIssues->new(Url =>$url, Apikey => $apikey, Verbose => 1);
 &UntouchedDays::setTargetTracker(['バグ','仕様変更']);
 # 放置日数の集計で、対象外とするステータス
 &UntouchedDays::setExcludeStatus(['却下','破棄','終了']);
-# 信頼度成長曲線の起点日
-&CountEachWeek::setStartDate('2016-11-07');
-# 信頼度成長曲線の終点日(未定義の場合は実行日になる)
-#&CountEachWeek::setEndDate('2016-12-05');
+# 信頼度成長曲線の起点日(月曜日とか金曜日の切りの良い日にする)
+&CountEachWeek::setStartDate('2021-08-30');
+# 信頼度成長曲線の終点日(未定義の場合は実行日前の7日毎の区切り日になる)
+&CountEachWeek::setEndDate('2021-12-06');
 # 信頼度成長曲線で、Open 状態と見なすステータス
 &CountEachWeek::setOpenStatus(['新規','進行中','解決','フィードバック']);
 
