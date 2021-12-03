@@ -4,7 +4,7 @@ set fontpath "/usr/share/fonts/"
 
 #set title "発生インシデント数・平均完了日数" font 'ipag,14' 
 # 作成日時を挿入
-set timestamp "%Y-%m-%d %H:%M 作成" top offset 50,-2.5 font 'ipag,10'
+set timestamp "%Y-%m-%d %H:%M 作成" top offset 50,0 font 'ipag,10'
 
 set style fill solid border lc rgb "black" 
 set boxwidth 0.3 relative				# 棒グラフの幅を指定する
